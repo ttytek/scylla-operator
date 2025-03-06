@@ -143,7 +143,8 @@ func (o *AnalyzeOptions) Run(streams genericclioptions.IOStreams, cmd *cobra.Com
 		} else {
 			codecFactory = serializer.NewCodecFactory(soscheme.Scheme, serializer.EnableStrict)
 		}
-		_, err = analyze.NewDataSourceFromFS(ctx, o.ArchivePath, codecFactory.UniversalDeserializer())
+		fs := os.DirFS(o.ArchivePath)
+		_, err = analyze.NewDataSourceFromFS(fs, codecFactory.UniversalDeserializer())
 		if err != nil {
 			return fmt.Errorf("can't build data source from must-gather: %w", err)
 		}
